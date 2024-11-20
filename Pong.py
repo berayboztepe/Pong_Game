@@ -2,6 +2,13 @@
 import turtle
 import winsound #it's for sound in windows
 import time
+import os
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+bounce_sound = os.path.join(current_dir, "bounce.wav")
+applause_sound = os.path.join(current_dir, "applause2.wav")
+game_over_sound = os.path.join(current_dir, "mixkit-arcade-retro-game-over-213.wav")
 
 #created a window
 wn = turtle.Screen()
@@ -204,14 +211,14 @@ def gameplay(score_a, score_b):
         if ball.ycor() > 290:
             ball.sety(290)
             ball.dy *= -1
-            winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+            winsound.PlaySound(bounce_sound, winsound.SND_ASYNC)
 
 
         #set down border
         if ball.ycor() < -290:
             ball.sety(-290)
             ball.dy *= -1
-            winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+            winsound.PlaySound(bounce_sound, winsound.SND_ASYNC)
 
         #it begin from 0, +400 to right, -400 to left.
         #set right and left borders. That means Computer scored. update the scoreboard
@@ -222,7 +229,7 @@ def gameplay(score_a, score_b):
             a = 1
             pen.clear()
             pen.write("Computer: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-            winsound.PlaySound("applause2.wav", winsound.SND_ASYNC)
+            winsound.PlaySound(applause_sound, winsound.SND_ASYNC)
 
         # set left border. That means Player B scored. update the scoreboard
         if ball.xcor() < -390:
@@ -232,20 +239,20 @@ def gameplay(score_a, score_b):
             a = 0
             pen.clear()
             pen.write("Computer: {}  Player B: {}".format(score_a, score_b), align="center", font=("Courier", 24, "normal"))
-            winsound.PlaySound("applause2.wav", winsound.SND_ASYNC)#score sound effect
+            winsound.PlaySound(applause_sound, winsound.SND_ASYNC)#score sound effect
 
         #paddle and ball collisions
         if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_B.ycor() + 40 and ball.ycor() > paddle_B.ycor() - 40):
             a = 1 #that means ball goes into paddle_A side. So paddle_A has to move to the ball
             ball.setx(340)
             ball.dx *= -1
-            winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)#it's a sound effect that comes after bouncing from border or paddle
+            winsound.PlaySound(bounce_sound, winsound.SND_ASYNC)#it's a sound effect that comes after bouncing from border or paddle
 
         if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_A.ycor() + 40 and ball.ycor() > paddle_A.ycor() - 40):
             a = 0 #ball goes into paddle_B side. so paddle_A will stop
             ball.setx(-340)
             ball.dx *= -1
-            winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+            winsound.PlaySound(bounce_sound, winsound.SND_ASYNC)
 
         #while ball is not at x = -173, paddle_A will not move. if x < -173, paddle_A will move onto ball. If it can not touch the ball, player scores.
         #if let the paddle move while x > -173, paddle will catch the ball everytime so player can not score
@@ -264,7 +271,7 @@ def gameplay(score_a, score_b):
 
         #player that scores 3 point, wins!
         if score_a == 3 or score_b == 3:
-            winsound.PlaySound("mixkit-arcade-retro-game-over-213.wav", winsound.SND_ASYNC)#it's game over sound effect
+            winsound.PlaySound(game_over_sound, winsound.SND_ASYNC)#it's game over sound effect
             pen.clear()
             wn.bgpic(None)
             paddle_B.reset()
